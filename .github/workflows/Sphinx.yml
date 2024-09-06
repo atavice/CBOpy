@@ -1,3 +1,11 @@
+"""
+This workflow is designed to:
+1. Build documentation using Sphinx whenever there is a push to the docs/ directory or a manual workflow trigger.
+2. Install all necessary dependencies (Sphinx and related extensions/themes.
+3. Build the documentation and output it to the _build/ directory.
+4. Automatically deploy the generated documentation to Github Pages, serving it from the gh-pages branch.
+"""
+
 
 name: Docs
 on: 

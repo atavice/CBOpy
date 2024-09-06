@@ -1,3 +1,6 @@
+# This YAML configuration file defines a GitHub Actions workflow that integrates Python testing and code coverage
+# reporting with Codecov.
+
 name: CodeCov
 on: workflow_dispatch
 jobs:

@@ -1,3 +1,8 @@
+"""
+This tests.yml file defines a Github Actions workflow for automatically testing 
+a Pyhton project using Pytest for testing and Ruff for linting. It is triggered on each push to the repo.
+"""
+
 name: Test
 
 on: push
