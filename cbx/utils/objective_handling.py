@@ -21,7 +21,7 @@ class cbx_objective:
         
     def __call__(self, x):
         """
-        Applies the objective function to the input x and counts th number of evaluations.
+        Applies the objective function to the input x and counts the number of evaluations.
 
         Parameters
         ----------
@@ -74,7 +74,7 @@ class cbx_objective_f1D(cbx_objective_fh):
     
     def apply(self, x):
         x = np.atleast_2d(x)
-        return np.apply_along_axis(self.f, 1, x.reshape(-1, x.shape[-1])).reshape(-1,x.shape[-2])
+        return np.apply_along_axis(self.f, 1, x.reshape(-1, x.shape[-1])).reshape(-1, x.shape[-2])
     
     
 class cbx_objective_f2D(cbx_objective_fh):
@@ -98,4 +98,4 @@ class cbx_objective_f2D(cbx_objective_fh):
         The output of the function.
         """
         x = np.atleast_2d(x)
-        return self.f(np.atleast_2d(x.reshape(-1, x.shape[-1]))).reshape(-1,x.shape[-2])
+        return self.f(np.atleast_2d(x.reshape(-1, x.shape[-1]))).reshape(-1, x.shape[-2])

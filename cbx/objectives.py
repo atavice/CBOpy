@@ -2,7 +2,7 @@
 objectives
 ==========
 
-This module implements obejective functions to test the performance of consesus 
+This module implements objective functions to test the performance of consesus
 algorithms.
 
 """
@@ -70,7 +70,7 @@ class three_hump_camel(cbx_objective):
 
     def __init__(self):
         super().__init__()
-        self.minima = np.array([[0,0]])
+        self.minima = np.array([[0, 0]])
 
     def apply(self, x):
         return 2*x[..., 0]**2 - 1.05 * x[..., 0]**4 + (1/6) * x[..., 0]**6 + x[..., 0]*x[..., 1] + x[..., 1]**2
