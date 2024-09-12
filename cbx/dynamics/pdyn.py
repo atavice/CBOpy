@@ -149,7 +149,7 @@ class ParticleDynamic:
         # set and promote objective function
         self.init_f(f, f_dim, check_f_dims)
 
-        self.energy = float('inf') * np.ones((self.M,self.N)) # energy of the particles
+        self.energy = float('inf') * np.ones((self.M, self.N))  # energy of the particles
         self.best_energy = float('inf') * np.ones(self.M,)
         self.best_particle = self.copy(self.x[:, 0, :])
         self.update_diff = float('inf') * np.ones((self.M,))
@@ -604,6 +604,8 @@ class CBXDynamic(ParticleDynamic):
             alpha: float = 1.0, 
             sigma: float = 5.1,
             lamda: float = 1.0,
+            tensor = None,
+            rank = None,
             correction: Union[str, None] = 'no_correction', 
             correction_eps: float = 1e-3,
             compute_consensus: Callable = None,
@@ -617,6 +619,8 @@ class CBXDynamic(ParticleDynamic):
         self.init_alpha(alpha)
         self.sigma = sigma
         self.lamda = lamda
+        self.tensor = tensor
+        self.rank = rank
         
         self.correction_eps = correction_eps
         self.set_correction(correction)

@@ -10,6 +10,10 @@ algorithms.
 import numpy as np
 from scipy.stats import multivariate_normal
 from .utils.objective_handling import cbx_objective
+
+import tensorly as tl
+from tensorly.cp_tensor import cp_to_tensor
+from tensorly.decomposition import parafac
     
 #%%
 
@@ -292,6 +296,64 @@ class Himmelblau(cbx_objective):
     def apply(self, x):
         x = self.factor*x
         return (x[...,0]**2 + x[...,1] - 11)**2 + (x[...,0] + x[...,1]**2 - 7)**2
+
+
+class TensorReconstructionError(cbx_objective):
+    """
+    Objective function for evaluating the reconstruction error of a tensor decomposed into three factor matrices.
+
+    Computes the Frobenius norm of the difference between an original tensor and a reconstructed tensor
+    composed from three matrices A, B, and C. Each matrix contributes to one mode of the tensor decomposition with
+    dimensions I x rank, J x rank, and K x rank respectively.
+
+    Parameters
+    ----------
+    starting_tensor : np.array
+        The original tensor that was decomposed into factor matrices.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from tensorly.cp_tensor import cp_to_tensor
+    >>> I, J, K, rank = 10, 10, 10, 3
+    >>> A = np.random.rand(I, rank)
+    >>> B = np.random.rand(J, rank)
+    >>> C = np.random.rand(K, rank)
+    >>> starting_tensor = np.random.rand(I, J, K)  # Random tensor for example
+    >>> particle = {'A': A, 'B': B, 'C': C}
+    >>> error_func = TensorReconstructionError(starting_tensor)
+    >>> error = error_func(particle)
+    >>> print(f"Reconstruction error: {error}")
+
+    See Also
+    --------
+    cp_to_tensor : Function to compose a tensor from three factor matrices according to the CP decomposition.
+    """
+
+    def __init__(self, starting_tensor):
+        super().__init__()
+        self.starting_tensor = starting_tensor
+
+    def apply(self, particle):
+        """
+        Calculate the reconstruction error of the tensor from the given particle matrices.
+
+        Args:
+        particle (dict): A dictionary with keys 'A', 'B', 'C' corresponding to matrices.
+
+        Returns:
+        float: The Frobenius norm of the difference between the starting tensor and the reconstructed tensor.
+        """
+        # Compose the tensor from the particle's matrices
+        # Create the tensor from the CP components
+        weights = np.ones(particle['A'].shape[1])  # Assuming all ones if not otherwise specified
+        factors = [particle['A'], particle['B'], particle['C']]
+        reconstructed_tensor = cp_to_tensor((weights, factors))
+
+        # Calculate the Frobenius norm of the difference between tensors
+        error = tl.norm(self.starting_tensor - reconstructed_tensor, 2)
+
+        return error
 
 
 class Rastrigin(cbx_objective):
